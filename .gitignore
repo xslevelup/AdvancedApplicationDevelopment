@@ -5,3 +5,10 @@ Sources/Ex03_Documents/Ex03/obj/
 Sources/Ex03_Documents/Ex03/bin/
 Sources/Dependency_injection/Dependency_injection/obj/
 Sources/Dependency_injection/Dependency_injection/bin/
+Sources/Examples/WCFServer/LoginService/obj/
+Sources/Examples/UseSQLite/UseSQLite/bin/
+Sources/Examples/TcpConnectorCliSrv/TcpConnectorCliSrv/obj/
+Sources/Examples/TcpConnectorCliSrv/TcpConnectorCliSrv/bin/
+Sources/Examples/UseSQLite/UseSQLite/obj/
+Sources/Examples/WCFServer/testWCFsrv/obj/
+Sources/Examples/WCFServer/testWCFsrv/bin/
