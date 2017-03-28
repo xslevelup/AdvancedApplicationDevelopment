@@ -1,30 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 
 namespace Dependency_injection
 {
     public partial class MainForm : Form
     {
-        public MainForm()
-        {
-            InitializeComponent();
-        }
-
         string databaseType;
         string databaseFile;
 
         string userName;
 
-        private void Form1_Load(object sender, EventArgs e)
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
         {
             var appSettings = ConfigurationManager.AppSettings;
             databaseType = appSettings["databaseType"];
@@ -35,12 +30,23 @@ namespace Dependency_injection
             UserNameInput.Text = userName;
         }
 
+        private void Save_Click(object sender, EventArgs e)
+        {
+            SaveUserName();
+        }
+
         private void LoadUserName()
         {
             try
             {
-                byte[] fileBytes = File.ReadAllBytes(databaseFile);
-                userName = Encoding.UTF8.GetString(fileBytes);
+                var userNameHex = File.ReadAllText(databaseFile);
+                var userNameBytes = Enumerable.Range(0, userNameHex.Length)
+                     .Where(x => x % 2 == 0)
+                     .Select(x => Convert.ToByte(userNameHex.Substring(x, 2), 16))
+                     .ToArray();
+                userName = Encoding.UTF8.GetString(userNameBytes);
+
+                //userName = File.ReadAllText(databaseFile);
             }
             catch (Exception)
             {
@@ -51,12 +57,12 @@ namespace Dependency_injection
         private void SaveUserName()
         {
             userName = UserNameInput.Text;
-            File.WriteAllBytes(databaseFile, Encoding.UTF8.GetBytes(userName));
-        }
 
-        private void Save_Click(object sender, EventArgs e)
-        {
-            SaveUserName();
+            var userNameBytes = Encoding.UTF8.GetBytes(userName);
+            string userNameHex = BitConverter.ToString(userNameBytes).Replace("-", string.Empty);
+            File.WriteAllText(databaseFile, userNameHex);
+            
+            //File.WriteAllText(databaseFile, userName);
         }
     }
 }
